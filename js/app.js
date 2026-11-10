@@ -15,3 +15,6 @@ searchForm.addEventListener("submit",  function(event){
 
 });
 
+
+import { buildWeatherURL } from "./api.js";
+
