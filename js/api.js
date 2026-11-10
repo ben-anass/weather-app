@@ -6,7 +6,11 @@ export function buildWeatherURL(city){
 }
 
 // ###############d27########6c6########2571a2fd####################3df########ee7########df0########e72######################3a0########270#########
+export async function getWeather(city) {
+    const url = buildWeatherURL(city)
 
-
-
+    const response = await fetch(url)
+    
+    return response;
+}
 
