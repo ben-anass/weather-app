@@ -62,3 +62,25 @@ button:hover {
 .weather-card .weather-icon {
     font-size: 60px ; margin : 20px 0 ;
 }
+
+#forecastList {
+    display : grid ; grid-template-columns : repeat(auto-fit, minmax(150px, 1fr));
+    gap : 15px ; margin-top : 20px ;
+}
+
+.forecast-card {
+    background: cornsilk;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+.forecast-card h3 {
+    color : #3837f5 ;
+    margin-bottom : 15px ;
+}
+
+.forecast-card p {
+    margin-bottom : 10px ; color : #444 ; 
+}
