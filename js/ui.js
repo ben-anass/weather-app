@@ -41,9 +41,99 @@ export function displayWeather(cityData, weatherData) {
     card.append(cityName , icon , description , temp , humidityText , wind  ) 
 
     container.appendChild(card);
-    
-
 
 }
+
+export function createForecastCard(forecast) {
+    const card = document.createElement("article")
+    card.classList.add("forecast-card") ;
+
+    const date = document.createElement("h3")
+    const formattedDate = new Date(forecast.date + "T00:00:00")
+
+    date.textContent = formattedDate.toLocaleDateString("fr-FR", {
+        weekday : "long" , day : "numeric" , month : "long" 
+    })
+
+    const maxTemp = document.createElement("p") 
+    maxTemp.textContent = `Max : ${forecast.max ?? "Donnée indisponible"} °C`
+
+    const minTemp = document.createElement("p")
+    minTemp.textContent = `Min : ${forecast.min ?? "Donnée indisponible"} °C` 
+    
+    card.append(date , maxTemp  , minTemp )
+
+
+    return  card ;
+}
+
+
+
+export function displayForecasts(forecasts) {
+    const container = document.querySelector("#forecastList")
+    container.textContent = "" 
+
+    const cards = forecasts.map(function(forecast) {
+        return createForecastCard(forecast ) ;
+    })
+    container.append(...cards)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export function displayForecasts(forecasts) {
+//     const container = document.querySelector("#forecastList");
+
+//     container.textContent = "";
+
+//     // هنا غادي نخدمو على كل forecast
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -23,9 +23,12 @@ export async function getCurrentWeather(latitude, longitude) {
     const response = await fetch(url);
 
     if (!response.ok) {
-        throw new Error("Erreur lors de la récupération de la météo.");
+        if (response.status === 429) {
+            throw new Error("Quota atteint. Veuillez réessayer plus tard.")
+        }
+        throw new Error("Le service météo est temporairement indisponible.")
     }
-
+    
     const data = await response.json();
 
     return data;
