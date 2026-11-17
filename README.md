@@ -1,17 +1,17 @@
 # 🌤️ Application Météo
 
-\<p align="center">
+<p align="center">
 &#x20; \<strong>Une application météo moderne, simple et responsive.\</strong>
 &#x20; \<br>
 &#x20; Consultez la météo actuelle et les prévisions sur 5 jours pour la ville de votre choix.
-\</p>
+</p>
 
-\<p align="center">
+<p align="center">
 &#x20; \<img src="[https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge\&logo=html5\&logoColor=white)" alt="HTML5">
 &#x20; \<img src="[https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge\&logo=css3\&logoColor=white)" alt="CSS3">
 &#x20; \<img src="[https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge\&logo=javascript\&logoColor=black)" alt="JavaScript">
 &#x20; \<img src="[https://img.shields.io/badge/Open--Meteo-API-22C55E?style=for-the-badge](https://img.shields.io/badge/Open--Meteo-API-22C55E?style=for-the-badge)" alt="Open-Meteo">
-\</p>
+</p>
 
 ---
 
