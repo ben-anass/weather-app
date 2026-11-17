@@ -215,4 +215,4 @@ Ce projet permet de pratiquer :
 
 ---
 
-\<p align="center">   Développé avec ❤️ et JavaScript \</p>
+<p align="center">   Développé avec ❤️ et JavaScript </p>
