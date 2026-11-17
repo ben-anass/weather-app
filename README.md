@@ -181,9 +181,9 @@ L'application prévoit plusieurs situations :
 | Recherche avec champ vide      | Message de validation         | ✅ Testé                |
 | Recherche d'une ville valide   | Météo et prévisions affichées | ✅ Testé                |
 | Recherche d'une ville inconnue | Message « Ville introuvable » | ✅ Testé                |
-| Problème de connexion          | Message d'erreur              | À documenter           |
+| Problème de connexion          | Message d'erreur              | ✅ Testé                |
 | Réessayer une recherche        | Nouvelle tentative            | ✅ Testé                |
-| Limite API (429)               | Message de quota atteint      | Non testé manuellement |
+| Limite API (429)               | Message de quota atteint      | ✅ Testé                |
 
 ## 🔐 Sécurité et limites
 
