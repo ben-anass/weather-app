@@ -25,7 +25,6 @@ searchForm.addEventListener("submit", function (event) {
 
     lastCity = city
     searchWeather(city);
-
 })
 
 

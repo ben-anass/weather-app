@@ -1,0 +1,710 @@
+
+========== ./index.html ==========
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <main>
+        <h1>Météo</h1>
+
+        <form id="searchForm">
+            <label for="cityInput">Ville</label>
+
+            <input type="text" id="cityInput" placeholder="Entrez une ville">
+
+            <button type="submit">Rechercher</button>
+        </form>
+
+        <p id="message"></p>
+        <button id="retryButton" hidden>Réessayer</button>
+        <p id="loadingMessage" hidden>Chargement...</p>
+
+        <section id="weatherContainer"></section>
+
+        <section id="forecastContainer">
+            <h2>Prévisions sur 5 jours</h2>
+            <div id="forecastList"></div>
+        </section>
+        
+    </main>
+
+    <script type="module" src="./js/app.js"></script>
+</body>
+
+</html>
+========== ./css/style.css ==========
+/* *{
+    margin : 0 ; padding : 0 ; box-sizing : border-box ;
+}
+
+body{
+    font-family : Arial , sans-serif ;
+    background : linear-gradient(135deg , #74d9ff , #a29dfe );
+    min-height : 100vh ; padding : 30px 20px ;
+}
+
+main {
+    max-width : 600px ; margin : 0 auto ; text-align : center ;
+}
+
+h1 {
+    text-transform : uppercase ; color : #ffffff ; font-size : 36px ;
+     margin-bottom: 30px ;
+}
+
+form {
+    display : flex ; gap : 10px ; margin-bottom : 25px ;
+}
+
+input {
+    flex : 1 ; padding : 12px ; border : none ; border-radius : 8px ;
+    font-size : 16px ;
+}
+
+button{
+    background : #3827F5 ; color : wheat ; padding : 10px ; border : none  ; border-radius : 10px ; cursor : pointer  ;transition: 0.3s;
+    
+}
+
+button:hover {
+    background : #2010b5 ; transform : scale(1.05);
+}
+
+#message {
+    color : white ; margin-bottom : 15px ; font-weight : bold ;
+}
+
+#loadingMessage {
+    color : white ; margin-bottom : 15px ; font-weight : bold ;
+}
+
+.weather-card {
+    background: cornsilk;
+    padding: 50px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    margin-top: 30px;
+}
+
+.weather-card h2 {
+    color : #3827f5 ; font-size : 28px ; margin-bottom : 15px
+}
+
+.weather-card p {
+    font-size : 16px ; margin-bottom : 12 px ; color : #444 ;
+}
+
+.weather-card .weather-icon {
+    font-size: 60px ; margin : 20px 0 ;
+}
+
+#forecastList {
+    display : grid ; grid-template-columns : repeat(auto-fit, minmax(150px, 1fr));
+    gap : 15px ; margin-top : 20px ;
+}
+
+.forecast-card {
+    background: cornsilk;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+    text-align: center;
+}
+
+.forecast-card h3 {
+    color : #3837f5 ;
+    margin-bottom : 15px ;
+}
+
+.forecast-card p {
+    margin-bottom : 10px ; color : #444 ; 
+} */
+
+
+
+
+/* ==============================
+   1. RESET & GLOBAL
+============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    padding: 40px 20px;
+    color: #ffffff;
+    background:
+        radial-gradient(circle at top left, #263f80, transparent 45%),
+        linear-gradient(135deg, #08152f, #101d42 60%, #172b55);
+}
+
+main {
+    width: 100%;
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+/* ==============================
+   2. HEADER
+============================== */
+
+h1 {
+    text-align: center;
+    font-size: 42px;
+    letter-spacing: 2px;
+    margin-bottom: 35px;
+    color: #ffffff;
+}
+
+/* ==============================
+   3. SEARCH FORM
+============================== */
+
+form {
+    display: flex;
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto 25px;
+}
+
+form label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+}
+
+input {
+    flex: 1;
+    min-width: 0;
+    padding: 15px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    outline: none;
+    font-size: 16px;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.10);
+    transition: 0.3s;
+}
+
+input::placeholder {
+    color: #b8c4df;
+}
+
+input:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.2);
+}
+
+button {
+    padding: 14px 22px;
+    border: none;
+    border-radius: 12px;
+    color: #ffffff;
+    background: #3978f6;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #2563eb;
+    transform: translateY(-2px);
+}
+
+button:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+/* ==============================
+   4. MESSAGES
+============================== */
+
+#message,
+#loadingMessage {
+    text-align: center;
+    margin: 15px 0;
+    font-size: 15px;
+    color: #dbeafe;
+}
+
+#retryButton {
+    display: block;
+    margin: 10px auto 20px;
+}
+
+#retryButton[hidden],
+#loadingMessage[hidden] {
+    display: none;
+}
+
+/* ==============================
+   5. CURRENT WEATHER
+============================== */
+
+.weather-card {
+    margin-top: 30px;
+    padding: 35px 25px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.10);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.20);
+}
+
+.weather-card h2 {
+    margin-bottom: 15px;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+.weather-card .weather-icon {
+    margin: 15px 0;
+    font-size: 75px;
+}
+
+.weather-card p {
+    margin-bottom: 12px;
+    color: #dbeafe;
+    font-size: 17px;
+}
+
+.weather-card p:nth-of-type(3) {
+    font-size: 38px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* ==============================
+   6. FORECAST
+============================== */
+
+#forecastContainer {
+    margin-top: 45px;
+}
+
+#forecastContainer h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    text-align: center;
+    color: #ffffff;
+}
+
+#forecastList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 15px;
+}
+
+.forecast-card {
+    padding: 22px 15px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+
+.forecast-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.forecast-card h3 {
+    margin-bottom: 18px;
+    font-size: 16px;
+    color: #93c5fd;
+}
+
+.forecast-card p {
+    margin-bottom: 12px;
+    color: #e2e8f0;
+    font-size: 15px;
+}
+
+/* ==============================
+   7. RESPONSIVE
+============================== */
+
+@media (max-width: 600px) {
+    body {
+        padding: 25px 15px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    form button {
+        width: 100%;
+    }
+
+    .weather-card {
+        padding: 28px 18px;
+    }
+
+    .weather-card h2 {
+        font-size: 25px;
+    }
+
+    #forecastList {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 350px) {
+    #forecastList {
+        grid-template-columns: 1fr;
+    }
+}
+
+========== ./js/ui.js ==========
+import { WEATHER_CODES } from "./weatherCodes.js";
+
+export function displayWeather(cityData, weatherData) {
+    const container = document.querySelector("#weatherContainer")
+
+    container.textContent = "" ;
+    const current = weatherData.current;
+    
+    const weatherCode = current.weather_code 
+
+    const weatherInfo = WEATHER_CODES[weatherCode] || {
+        label : "Conditions meteo inconues", icon : "?"}
+    
+    const temperature = current.temperature_2m 
+    const humidity = current.relative_humidity_2m 
+    const windSpeed = current.wind_speed_10m 
+
+    const card = document.createElement("article");
+    card.classList.add("weather-card")
+
+    const cityName = document.createElement("h2")
+    cityName.textContent = cityData.name 
+
+    const icon = document.createElement("p")
+    icon.textContent = weatherInfo.icon 
+    icon.classList.add("weather-icon");
+
+    const description = document.createElement("p")
+    description.textContent = weatherInfo.label 
+
+
+    const temp = document.createElement("p")
+    temp.textContent = `${temperature} °C` ;
+
+    const humidityText = document.createElement("p")
+    humidityText.textContent =`Humidite : ${humidity} %` ;
+
+    const wind = document.createElement("p")
+    wind.textContent = ` vent : ${windSpeed} km/h`;
+
+    card.append(cityName , icon , description , temp , humidityText , wind  ) 
+
+    container.appendChild(card);
+
+}
+
+export function createForecastCard(forecast) {
+    const card = document.createElement("article")
+    card.classList.add("forecast-card") ;
+
+    const date = document.createElement("h3")
+    const formattedDate = new Date(forecast.date + "T00:00:00")
+
+    date.textContent = formattedDate.toLocaleDateString("fr-FR", {
+        weekday : "long" , day : "numeric" , month : "long" 
+    })
+
+    const maxTemp = document.createElement("p") 
+    maxTemp.textContent = `Max : ${forecast.max ?? "Donnée indisponible"} °C`
+
+    const minTemp = document.createElement("p")
+    minTemp.textContent = `Min : ${forecast.min ?? "Donnée indisponible"} °C` 
+    
+    card.append(date , maxTemp  , minTemp )
+
+
+    return  card ;
+}
+
+
+
+export function displayForecasts(forecasts) {
+    const container = document.querySelector("#forecastList")
+    container.textContent = "" 
+
+    const cards = forecasts.map(function(forecast) {
+        return createForecastCard(forecast ) ;
+    })
+    container.append(...cards)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// export function displayForecasts(forecasts) {
+//     const container = document.querySelector("#forecastList");
+
+//     container.textContent = "";
+
+//     // هنا غادي نخدمو على كل forecast
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+========== ./js/api.js ==========
+const API_KEY = "d276c62571a2fd3dfee7df0e723a0270"
+
+export async function getCoordinates(city) {
+    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=fr&format=json`;
+
+    const response = await fetch(url)
+    if (!response.ok) {
+        throw new Error("Entre lors de la rechrche de la ville ")
+    }
+    const data = await response.json() ;
+
+    if (!data.results || data.results.length === 0) {
+        throw new Error("Ville introuvable.");
+    }
+    return data.results[0]
+}
+
+
+export async function getCurrentWeather(latitude, longitude) {
+    
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,weather_code&forecast_days=5&temperature_unit=celsius&wind_speed_unit=kmh&timezone=auto`;
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
+        if (response.status === 429) {
+            throw new Error("Quota atteint. Veuillez réessayer plus tard.")
+        }
+        throw new Error("Le service météo est temporairement indisponible.")
+    }
+    
+    const data = await response.json();
+
+    return data;
+}
+
+========== ./js/weatherCodes.js ==========
+export const WEATHER_CODES = {
+    0:  { label: "Ciel dégagé", icon: "☀️" },
+    1:  { label: "Plutôt dégagé", icon: "🌤️" },
+    2:  { label: "Partiellement nuageux", icon: "⛅" },
+    3:  { label: "Couvert", icon: "☁️" },
+    45: { label: "Brouillard", icon: "🌫️" },
+    48: { label: "Brouillard givrant", icon: "🌫️" },
+    51: { label: "Bruine légère", icon: "🌦️" },
+    53: { label: "Bruine", icon: "🌦️" },
+    55: { label: "Bruine forte", icon: "🌦️" },
+    56: { label: "Bruine verglaçante", icon: "🌧️" },
+    57: { label: "Bruine verglaçante", icon: "🌧️" },
+    61: { label: "Pluie légère", icon: "🌧️" },
+    63: { label: "Pluie", icon: "🌧️" },
+    65: { label: "Pluie forte", icon: "🌧️" },
+    66: { label: "Pluie verglaçante", icon: "🌧️" },
+    67: { label: "Pluie verglaçante", icon: "🌧️" },
+    71: { label: "Neige légère", icon: "🌨️" },
+    73: { label: "Neige", icon: "🌨️" },
+    75: { label: "Neige forte", icon: "❄️" },
+    77: { label: "Grains de neige", icon: "🌨️" },
+    80: { label: "Averses légères", icon: "🌦️" },
+    81: { label: "Averses", icon: "🌧️" },
+    82: { label: "Averses violentes", icon: "⛈️" },
+    85: { label: "Averses de neige", icon: "🌨️" },
+    86: { label: "Fortes averses de neige", icon: "❄️" },
+    95: { label: "Orage", icon: "⛈️" },
+    96: { label: "Orage avec grêle", icon: "⛈️" },
+    99: { label: "Orage avec forte grêle", icon: "⛈️" }
+};
+
+
+
+
+========== ./js/app.js ==========
+import { getCoordinates, getCurrentWeather } from "./api.js";
+import { displayWeather , displayForecasts } from "./ui.js";
+
+
+const searchForm = document.querySelector("#searchForm");
+const cityInput = document.querySelector("#cityInput");
+const message = document.querySelector("#message");
+const loadingMessage = document.querySelector("#loadingMessage");
+const retryButton = document.querySelector("#retryButton");
+
+
+let lastCity = "";
+
+
+searchForm.addEventListener("submit", function (event) {
+    event.preventDefault()
+
+    const city = cityInput.value.trim();
+
+    if (city === "") {
+        message.textContent = "Veuillez saisir une ville."  ;
+        retryButton.hidden = true
+        return
+    }
+
+    lastCity = city
+    searchWeather(city);
+})
+
+
+retryButton.addEventListener("click", function () {
+    if (lastCity !== ""){
+        searchWeather(lastCity) ;
+    }
+})
+
+
+
+async function searchWeather(city) {
+
+    message.textContent = "" 
+    loadingMessage.hidden = false
+    retryButton.hidden = true;
+
+    try {
+        // Recuperer  coordonnees ville
+        const cityData = await getCoordinates(city) ;
+
+        // Recuperer  météo 
+        const weatherData = await getCurrentWeather(
+            cityData.latitude,
+            cityData.longitude
+        );
+
+        const daily = weatherData.daily ;
+        const forecasts = daily.time.map(function(date, index) {
+            return {
+                date : date , 
+                max : daily.temperature_2m_max[index],
+                min : daily.temperature_2m_min[index],
+                code : daily.weather_code[index]
+            } ;
+        }) ;
+
+
+        // Affiche meteo 
+        displayWeather(cityData, weatherData)
+        displayForecasts(forecasts)
+
+    } catch (error) {
+        message.textContent = error.message
+        retryButton.hidden = false;
+
+    } finally {
+        loadingMessage.hidden = true ;
+    }
+
+}
+
+========== ./README.md ==========
+# Application Météo
+
+## Description
+
+## Technologies utilisées
+
+## Installation et lancement
+
+## Endpoints API utilisés
+
+## Limites de l'API
+
+## Exemple de réponse JSON
+
+## Correspondance des données avec l'interface
+
+## Captures d'écran
+
+## Journal des tests manuels
+
+## Sécurité
+
+========== ./.vscode/settings.json ==========
+{
+    "liveServer.settings.port": 5502
+}
+========== ./test.md ==========
+# Tests manuels
+
+| Test           | Action                             | Résultat attendu                    | OK  |
+| -------------- | ---------------------------------- | ----------------------------------- | --- |
+| Champ vide     | Cliquer sur Rechercher sans écrire | Message « Entrez un nom de ville. » | ✅  |
+| Ville valide   | Rechercher « Taza »                | Météo actuelle et 5 jours affichés  | ✅  |
+| Ville inconnue | Rechercher « hhhhhh »              | Message « Ville introuvable. »      | ✅  |
+| Réessayer      | Débloquer, cliquer sur Réessayer   | Résultats affichés                  | ✅  |
